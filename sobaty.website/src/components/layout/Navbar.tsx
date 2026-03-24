@@ -10,14 +10,14 @@ export default function Navbar() {
           <Image src="/logo.png" alt="SoBaty Logo" width={120} height={40} priority className={styles.logoImg} />
         </Link>
         <div className={styles.links}>
-          <Link href="/features">Fonctionnalités</Link>
-          <Link href="/feed-back">Retour clients</Link>
-          <Link href="/pricing">Tarifs</Link>
-          <Link href="/blog">Blog</Link>
-          <Link href="/contact" className={styles.secondaryCta}>
+          <Link href="#features">Fonctionnalités</Link>
+          <Link href="#feed-back">Retour clients</Link>
+          <Link href="#pricing">Tarifs</Link>
+          <Link href="#help">Aide</Link>
+          <Link href="/login" className={styles.secondaryCta}>
             Se connecter
           </Link>
-          <Link href="/contact" className={styles.cta}>
+          <Link href="/register" className={styles.cta}>
             Essayez-le gratuitement
           </Link>
         </div>

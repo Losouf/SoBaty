@@ -40,15 +40,55 @@ export default function Hero() {
                 </div>
                 <div className={styles.dashboardContent}>
                   <div className={styles.dashboardGrid}>
-                    <div className={styles.miniCard}></div>
-                    <div className={styles.miniCard}></div>
-                    <div className={styles.miniCard}></div>
+                    <div className={styles.miniCard}>
+                      <span className={styles.miniLabel}>En attente</span>
+                      <span className={styles.miniValue}>12</span>
+                    </div>
+                    <div className={styles.miniCard}>
+                      <span className={styles.miniLabel}>Clients</span>
+                      <span className={styles.miniValue}>48</span>
+                    </div>
+                    <div className={styles.miniCard}>
+                      <span className={styles.miniLabel}>Projets</span>
+                      <span className={styles.miniValue}>6</span>
+                    </div>
+                  </div>
+                  <div className={styles.chartArea}>
+                    <div className={styles.chartHeader}>Revenus (7 derniers jours)</div>
+                    <svg className={styles.chartSvg} viewBox="0 0 400 100" preserveAspectRatio="none">
+                      <path 
+                        d="M0,80 Q50,70 80,40 T160,50 T240,20 T320,60 T400,30" 
+                        fill="none" 
+                        stroke="#2b6af8" 
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                      />
+                      <path 
+                        d="M0,80 Q50,70 80,40 T160,50 T240,20 T320,60 T400,30 L400,100 L0,100 Z" 
+                        fill="url(#gradient)" 
+                        opacity="0.1"
+                      />
+                      <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#2b6af8" />
+                          <stop offset="100%" stopColor="#ffffff" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
                   </div>
                   <div className={styles.activityList}>
-                    <div className={styles.activityItem}></div>
-                    <div className={styles.activityItem}></div>
-                    <div className={styles.activityItem}></div>
-                    <div className={styles.activityItem}></div>
+                    <div className={styles.activityItem}>
+                      <span>Facture #452 (Jean D.)</span>
+                      <strong>850 €</strong>
+                    </div>
+                    <div className={styles.activityItem}>
+                      <span>Devis #128 (Mairie)</span>
+                      <strong className={styles.pending}>En attente</strong>
+                    </div>
+                    <div className={styles.activityItem}>
+                      <span>Paiement reçu</span>
+                      <strong className={styles.success}>+1,200 €</strong>
+                    </div>
                   </div>
                 </div>
               </div>
