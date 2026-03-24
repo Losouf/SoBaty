@@ -79,12 +79,12 @@ export default function Pricing() {
         <div className={styles.header}>
           <span className={styles.preTitle}>Tarifs</span>
           <h2 className={styles.title}>Une offre adaptée à <span>votre croissance</span></h2>
-          
+
           <div className={styles.toggleWrapper}>
             <div className={styles.segmentedToggle}>
-              <input 
-                type="checkbox" 
-                id={toggleId} 
+              <input
+                type="checkbox"
+                id={toggleId}
                 className={styles.toggleInput}
                 checked={isYearly}
                 onChange={handleToggle}
@@ -100,8 +100,8 @@ export default function Pricing() {
 
         <div className={styles.flexGrid}>
           {plans.map((plan, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`${styles.card} ${plan.popular ? styles.popularCard : ''}`}
             >
               {plan.popular && (
@@ -110,7 +110,7 @@ export default function Pricing() {
                   <div className={styles.shimmer} />
                 </>
               )}
-              
+
               <div className={styles.cardHeader}>
                 <div className={styles.titleRow}>
                   <div className={styles.iconWrapper}>{plan.icon}</div>
@@ -129,7 +129,7 @@ export default function Pricing() {
                     </div>
                   </div>
                   <span className={styles.period}>/mois</span>
-                  
+
                   {isYearly && plan.name !== "Gratuit" && (
                     <span className={styles.cardDiscount}>-20%</span>
                   )}
@@ -147,8 +147,8 @@ export default function Pricing() {
 
               <div className={styles.spacer} />
 
-              <Link 
-                href="/register" 
+              <Link
+                href="/register"
                 className={`${styles.cta} ${plan.popular ? styles.popularCta : ''}`}
               >
                 {plan.cta}

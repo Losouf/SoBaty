@@ -84,7 +84,7 @@
   z-index: -1;
 }
 
-.toggleInput:checked + .toggleLabel .toggleSlider {
+.toggleInput:checked+.toggleLabel .toggleSlider {
   transform: translateX(100%);
 }
 
@@ -140,19 +140,22 @@
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.6),
+      transparent);
   transform: skewX(-20deg);
   animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-  0% { left: -100%; }
-  100% { left: 200%; }
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%;
+  }
 }
 
 .popularBadge {
@@ -211,7 +214,8 @@
   align-items: baseline;
   gap: 0.25rem;
   margin-bottom: 2.5rem;
-  position: relative; /* For absolute discount badge */
+  position: relative;
+  /* For absolute discount badge */
 }
 
 .odometerWrapper {
@@ -268,8 +272,15 @@
 }
 
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Feature List */
@@ -348,16 +359,16 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .popularCard {
     transform: none;
     order: -1;
   }
-  
+
   .popularCard:hover {
     transform: translateY(-10px);
   }
-  
+
   .card {
     min-height: auto;
   }
