@@ -14,7 +14,7 @@ export default function Navbar() {
           <Link href="/feed-back">Retour clients</Link>
           <Link href="/pricing">Tarifs</Link>
           <Link href="/blog">Blog</Link>
-          <Link href="/contact" className={styles.cta}>
+          <Link href="/contact" className={styles.secondaryCta}>
             Se connecter
           </Link>
           <Link href="/contact" className={styles.cta}>

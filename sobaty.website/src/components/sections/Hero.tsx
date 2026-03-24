@@ -1,3 +1,4 @@
+import { TrendingUp, Check, LayoutDashboard, FileText, Users, Settings, PieChart } from 'lucide-react';
 import styles from './Hero.module.css';
 
 export default function Hero() {
@@ -24,15 +25,52 @@ export default function Hero() {
         </div>
         <div className={styles.visual}>
           <div className={styles.mockup}>
-            {/* We can use a stylized div to represent a dashboard or an image if available */}
             <div className={styles.dashboardPreview}>
-              <div className={styles.headerDot}></div>
-              <div className={styles.lines}>
-                <div className={styles.line}></div>
-                <div className={styles.line}></div>
-                <div className={styles.line}></div>
+              <div className={styles.topBar}>
+                <div className={styles.dots}><span></span><span></span><span></span></div>
+                <div className={styles.searchBar}></div>
               </div>
-              <div className={styles.chart}></div>
+              <div className={styles.mainArea}>
+                <div className={styles.sideNav}>
+                  <LayoutDashboard size={14} />
+                  <FileText size={14} />
+                  <Users size={14} />
+                  <PieChart size={14} />
+                  <Settings size={14} />
+                </div>
+                <div className={styles.dashboardContent}>
+                  <div className={styles.dashboardGrid}>
+                    <div className={styles.miniCard}></div>
+                    <div className={styles.miniCard}></div>
+                    <div className={styles.miniCard}></div>
+                  </div>
+                  <div className={styles.activityList}>
+                    <div className={styles.activityItem}></div>
+                    <div className={styles.activityItem}></div>
+                    <div className={styles.activityItem}></div>
+                    <div className={styles.activityItem}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Floating elements moved outside mockup to allow overflow */}
+          <div className={styles.floatingCard1}>
+            <div className={styles.cardIcon}>
+              <TrendingUp size={20} color="#10b981" />
+            </div>
+            <div>
+              <div className={styles.cardLabel}>Revenus</div>
+              <div className={styles.cardValue}>12,450 €</div>
+            </div>
+          </div>
+          <div className={styles.floatingCard2}>
+            <div className={styles.cardIcon}>
+              <Check size={20} color="#2b6af8" />
+            </div>
+            <div>
+              <div className={styles.cardLabel}>Devis validé</div>
+              <div className={styles.cardValue}>Restaurant L'Escale</div>
             </div>
           </div>
         </div>
