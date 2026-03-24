@@ -1,0 +1,364 @@
+.pricing {
+  padding: 100px 0;
+  background-color: #fafafa;
+}
+
+.header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.preTitle {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: 2rem;
+}
+
+.title span {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Toggle Styles - Segmented Control */
+.toggleWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.segmentedToggle {
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 9999px;
+  display: inline-flex;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.toggleInput {
+  display: none;
+}
+
+.toggleLabel {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.toggleOption {
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  transition: color 0.3s ease;
+  min-width: 120px;
+  text-align: center;
+}
+
+.toggleSlider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: white;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.toggleInput:checked + .toggleLabel .toggleSlider {
+  transform: translateX(100%);
+}
+
+/* Layout & Grid */
+.flexGrid {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* Card Styles */
+.card {
+  flex: 1;
+  min-width: 320px;
+  background: white;
+  padding: 3rem;
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.popularCard {
+  flex: 1.1;
+  border: 2px solid var(--primary);
+  background: white;
+  z-index: 10;
+  box-shadow: 0 20px 50px -10px rgba(43, 106, 248, 0.15);
+  transform: scale(1.05);
+}
+
+.popularCard:hover {
+  transform: scale(1.07) translateY(-10px);
+  box-shadow: 0 40px 100px -20px rgba(43, 106, 248, 0.25);
+}
+
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+.popularBadge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 2;
+}
+
+/* Card Content Improvements */
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardHeader h3 {
+  font-size: 1.75rem;
+  color: var(--primary);
+  margin: 0;
+}
+
+.cardHeader p {
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1.5rem 0 2rem;
+}
+
+.iconWrapper {
+  width: 44px;
+  height: 44px;
+  background: rgba(43, 106, 248, 0.08);
+  color: var(--primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Odometer Car Counter Effect */
+.odometer {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 2.5rem;
+  position: relative; /* For absolute discount badge */
+}
+
+.odometerWrapper {
+  height: 5rem;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+}
+
+.odometerValue {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.rollUp {
+  transform: translateY(-5rem);
+}
+
+.currency {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.priceStr {
+  height: 5rem;
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.05em;
+  line-height: 5rem;
+}
+
+.period {
+  color: var(--muted-foreground);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.cardDiscount {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #10b981;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Feature List */
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  color: var(--foreground);
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .features li {
+  transform: translateX(4px);
+}
+
+.checkIcon {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px;
+  border-radius: 50%;
+}
+
+.spacer {
+  flex: 1;
+  min-height: 2rem;
+}
+
+.cta {
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.cta:hover {
+  background: rgba(43, 106, 248, 0.05);
+  transform: translateY(-2px);
+}
+
+.popularCta {
+  background: var(--primary);
+  color: white;
+}
+
+.popularCta:hover {
+  background: #1e5ade;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(43, 106, 248, 0.3);
+}
+
+@media (max-width: 1024px) {
+  .flexGrid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .popularCard {
+    transform: none;
+    order: -1;
+  }
+  
+  .popularCard:hover {
+    transform: translateY(-10px);
+  }
+  
+  .card {
+    min-height: auto;
+  }
+}

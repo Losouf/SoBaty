@@ -11,8 +11,8 @@ export default function Navbar() {
         </Link>
         <div className={styles.links}>
           <Link href="#features">Fonctionnalités</Link>
-          <Link href="#feed-back">Retour clients</Link>
           <Link href="#pricing">Tarifs</Link>
+          <Link href="#feed-back">Retour clients</Link>
           <Link href="#help">Aide</Link>
           <Link href="/login" className={styles.secondaryCta}>
             Se connecter
