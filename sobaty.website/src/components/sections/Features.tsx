@@ -52,28 +52,29 @@ export default function Features() {
 
   return (
     <section id="features" className={styles.features} ref={sectionRef}>
-      <div className={`${styles.container} container`}>
-        <div className={styles.leftCol}>
-          <div className={styles.header}>
-            <span className={styles.preTitle}>Fonctionnalités</span>
-            <h2 className={styles.title}>Tout ce dont vous avez besoin pour <span>booster votre activité</span></h2>
-          </div>
-
-          {features.map((feature) => (
-            <div key={feature.id} id={`content-${feature.id}`} className={styles.textBlock}>
-              <div className={styles.titleWrapper}>
-                <div className={styles.iconBox}>{feature.icon}</div>
-                <h3>{feature.title}</h3>
-              </div>
-              <p>{feature.description}</p>
-              <ul className={styles.featureList}>
-                {feature.points.map((point, i) => (
-                  <li key={i}><CheckCircle2 size={16} /> {point}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <div className="container">
+        <div className={styles.header}>
+          <span className={styles.preTitle}>Fonctionnalités</span>
+          <h2 className={styles.title}>Tout ce dont vous avez besoin pour <span>booster votre activité</span></h2>
         </div>
+
+        <div className={styles.splitLayout}>
+          <div className={styles.leftCol}>
+            {features.map((feature) => (
+              <div key={feature.id} id={`content-${feature.id}`} className={styles.textBlock}>
+                <div className={styles.titleWrapper}>
+                  <div className={styles.iconBox}>{feature.icon}</div>
+                  <h3>{feature.title}</h3>
+                </div>
+                <p>{feature.description}</p>
+                <ul className={styles.featureList}>
+                  {feature.points.map((point, i) => (
+                    <li key={i}><CheckCircle2 size={16} /> {point}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
 
         <div className={styles.rightCol}>
           <div className={styles.stickyWrapper}>
@@ -173,6 +174,7 @@ export default function Features() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 }
