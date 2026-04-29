@@ -6,6 +6,42 @@ export const Header: GlobalConfig = {
   admin: { group: 'Layout' },
   fields: [
     {
+      name: 'announcement',
+      type: 'group',
+      label: "Bandeau d'annonce",
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          defaultValue: true,
+          label: "Afficher le bandeau d'annonce",
+        },
+        {
+          name: 'badge',
+          type: 'text',
+          localized: true,
+          defaultValue: 'NOUVEAU',
+          admin: { description: "Petite étiquette à gauche (ex: NOUVEAU, BÊTA)" },
+        },
+        {
+          name: 'message',
+          type: 'text',
+          localized: true,
+          admin: {
+            description:
+              'Message du bandeau. Utilise **double-astérisques** pour mettre des mots en gras.',
+          },
+        },
+        {
+          name: 'linkLabel',
+          type: 'text',
+          localized: true,
+          defaultValue: 'En savoir plus →',
+        },
+        { name: 'linkHref', type: 'text' },
+      ],
+    },
+    {
       name: 'logo',
       type: 'upload',
       relationTo: 'media',

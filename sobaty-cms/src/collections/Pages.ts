@@ -1,10 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
 import { Hero } from '../blocks/Hero'
+import { LogoStrip } from '../blocks/LogoStrip'
 import { Features } from '../blocks/Features'
+import { Comparison } from '../blocks/Comparison'
 import { Pricing } from '../blocks/Pricing'
 import { Testimonials } from '../blocks/Testimonials'
 import { FAQ } from '../blocks/FAQ'
+import { FinalCTA } from '../blocks/FinalCTA'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -47,7 +50,7 @@ export const Pages: CollectionConfig = {
       name: 'layout',
       type: 'blocks',
       required: true,
-      blocks: [Hero, Features, Pricing, Testimonials, FAQ],
+      blocks: [Hero, LogoStrip, Features, Comparison, Pricing, Testimonials, FAQ, FinalCTA],
     },
   ],
 }

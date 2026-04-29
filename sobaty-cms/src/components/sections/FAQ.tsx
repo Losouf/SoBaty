@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { ChevronDown, HelpCircle } from 'lucide-react'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { ChevronDown } from 'lucide-react'
 import HighlightedTitle from '../HighlightedTitle'
 import styles from './FAQ.module.css'
 
@@ -14,49 +15,94 @@ type FAQItem = {
 type FAQProps = {
   preTitle?: string | null
   title: string
-  subtitle?: string | null
   items: FAQItem[]
+  contactLine?: {
+    show?: boolean | null
+    text?: string | null
+    linkLabel?: string | null
+    linkHref?: string | null
+  } | null
 }
 
-export default function FAQ({ preTitle, title, subtitle, items }: FAQProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+function renderBoldMarkdown(text: string) {
+  const parts = text.split(/\*\*(.+?)\*\*/g)
+  return parts.map((part, i) =>
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : <Fragment key={i}>{part}</Fragment>,
+  )
+}
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
+function FAQItemRow({
+  question,
+  answer,
+  open,
+  onToggle,
+}: {
+  question: string
+  answer: string
+  open: boolean
+  onToggle: () => void
+}) {
+  const innerRef = useRef<HTMLDivElement>(null)
+  const [maxH, setMaxH] = useState(0)
+
+  useEffect(() => {
+    if (open && innerRef.current) {
+      setMaxH(innerRef.current.scrollHeight)
+    } else {
+      setMaxH(0)
+    }
+  }, [open, answer])
 
   return (
-    <section id="help" className={styles.faq}>
-      <div className="container">
+    <div className={`${styles.item} ${open ? styles.itemOpen : ''}`}>
+      <button className={styles.question} onClick={onToggle} aria-expanded={open}>
+        <span className={styles.questionText}>{question}</span>
+        <span className={styles.chevron}>
+          <ChevronDown size={14} strokeWidth={3} />
+        </span>
+      </button>
+      <div className={styles.answerWrap} style={{ maxHeight: maxH }}>
+        <div ref={innerRef} className={styles.answer}>
+          {renderBoldMarkdown(answer)}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function FAQ({ preTitle, title, items, contactLine }: FAQProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
+
+  return (
+    <section className={styles.faq}>
+      <div className={`container ${styles.inner}`}>
         <div className={styles.header}>
           {preTitle && <span className={styles.preTitle}>{preTitle}</span>}
           <HighlightedTitle text={title} className={styles.title} />
-          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         </div>
 
-        <div className={styles.accordion}>
-          {items.map((item, index) => (
-            <div key={index} className={`${styles.item} ${openIndex === index ? styles.active : ''}`}>
-              <button
-                className={styles.question}
-                onClick={() => toggleFAQ(index)}
-                aria-expanded={openIndex === index}
-              >
-                <span className={styles.questionText}>
-                  <HelpCircle size={18} className={styles.icon} />
-                  {item.question}
-                </span>
-                <ChevronDown size={20} className={styles.chevron} />
-              </button>
-
-              <div className={styles.answerWrapper}>
-                <div className={styles.answer}>
-                  <p>{item.answer}</p>
-                </div>
-              </div>
-            </div>
+        <div className={styles.list}>
+          {items.map((item, i) => (
+            <FAQItemRow
+              key={i}
+              question={item.question}
+              answer={item.answer}
+              open={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            />
           ))}
         </div>
+
+        {contactLine?.show && (contactLine.text || contactLine.linkLabel) && (
+          <div className={styles.contactLine}>
+            {contactLine.text}
+            {contactLine.linkLabel && (
+              <Link href={contactLine.linkHref || '#'} className={styles.contactLink}>
+                {contactLine.linkLabel}
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </section>
   )

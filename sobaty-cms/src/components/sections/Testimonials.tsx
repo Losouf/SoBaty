@@ -1,4 +1,3 @@
-import { Star, Quote } from 'lucide-react'
 import HighlightedTitle from '../HighlightedTitle'
 import styles from './Testimonials.module.css'
 
@@ -6,51 +5,92 @@ type Review = {
   id?: string | null
   name: string
   role: string
+  trade?: string | null
   content: string
   stars: number
-  size: 'small' | 'medium' | 'large'
-  tag?: string | null
+  avatarColor?: 'blue' | 'darken' | 'lighten' | null
 }
 
 type TestimonialsProps = {
   preTitle?: string | null
   title: string
+  googleRating?: {
+    show?: boolean | null
+    label?: string | null
+    sub?: string | null
+  } | null
   reviews: Review[]
 }
 
-export default function Testimonials({ preTitle, title, reviews }: TestimonialsProps) {
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
+}
+
+export default function Testimonials({
+  preTitle,
+  title,
+  googleRating,
+  reviews,
+}: TestimonialsProps) {
   return (
-    <section id="feed-back" className={styles.testimonials}>
-      <div className={styles.container}>
+    <section className={styles.testimonials}>
+      <div className="container">
         <div className={styles.header}>
           {preTitle && <span className={styles.preTitle}>{preTitle}</span>}
           <HighlightedTitle text={title} className={styles.title} />
         </div>
 
-        <div className={styles.bentoGrid}>
-          {reviews.map((review, idx) => (
-            <div key={idx} className={`${styles.card} ${styles[review.size]}`}>
-              <div className={styles.cardHeader}>
-                <div className={styles.stars}>
-                  {[...Array(review.stars)].map((_, i) => (
-                    <Star key={i} size={14} fill="#FFB800" color="#FFB800" />
-                  ))}
-                </div>
-                {review.tag && <span className={styles.tag}>{review.tag}</span>}
-              </div>
-
-              <blockquote className={styles.content}>{review.content}</blockquote>
-
-              <div className={styles.cardFooter}>
-                <div className={styles.avatar}>{review.name.charAt(0)}</div>
-                <div className={styles.meta}>
-                  <p className={styles.name}>{review.name}</p>
-                  <p className={styles.role}>{review.role}</p>
-                </div>
-                <Quote className={styles.quoteIcon} size={24} />
-              </div>
+        {googleRating?.show && (
+          <div className={styles.googleCallout}>
+            <div className={styles.googleLogo}>G</div>
+            <div>
+              {googleRating.label && (
+                <div className={styles.googleLabel}>{googleRating.label}</div>
+              )}
+              {googleRating.sub && <div className={styles.googleSub}>{googleRating.sub}</div>}
             </div>
-          ))}
+            <div className={styles.googleStars}>★★★★★</div>
+          </div>
+        )}
+
+        <div className={styles.grid}>
+          {reviews.map((review, i) => {
+            const avatarClass =
+              review.avatarColor === 'darken'
+                ? styles.avatarDarken
+                : review.avatarColor === 'lighten'
+                  ? styles.avatarLighten
+                  : styles.avatarBlue
+            return (
+              <div key={i} className={styles.card}>
+                <div className={styles.cardStars}>{'★'.repeat(review.stars)}</div>
+                <p className={styles.quote}>« {review.content} »</p>
+                <div className={styles.cardFoot}>
+                  <div className={`${styles.avatar} ${avatarClass}`}>
+                    {getInitials(review.name)}
+                  </div>
+                  <div>
+                    <div className={styles.cardName}>{review.name}</div>
+                    <div className={styles.cardMeta}>
+                      {review.role}
+                      {review.trade && (
+                        <>
+                          {' • '}
+                          <span className={styles.cardTrade}>{review.trade}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -1,29 +1,59 @@
 :root {
-  /* Color Palette */
-  --primary: #2b6af8;
+  /* SO BATY palette */
+  --sb-blue-primary: #2b6bff;
+  --sb-blue-darken: #1216ff;
+  --sb-blue-lighten: #45b1ff;
+  --sb-blue-50: #eff3ff;
+  --sb-blue-100: #dce6ff;
+  --sb-blue-200: #b8ccff;
+  --sb-blue-700: #1a4fe0;
+  --sb-blue-900: #0e2a8a;
+
+  --sb-ink: #1a2030;
+  --sb-ink-soft: #5a5f6b;
+  --sb-ink-muted: #8a8f9a;
+  --sb-line: #e5e7ee;
+  --sb-line-soft: #eef0f6;
+  --sb-bg: #ffffff;
+  --sb-bg-soft: #f7f8fc;
+  --sb-bg-wash: #eff3ff;
+
+  --sb-accent-orange: #ff8a2b;
+  --sb-accent-amber: #ffc542;
+
+  --sb-success: #1fb378;
+  --sb-warning: #f0a23b;
+  --sb-danger: #e5484d;
+
+  --sb-gradient-brand: linear-gradient(to top right, #1216ff 0%, #45b1ff 100%);
+
+  /* Legacy aliases (used by some existing components) */
+  --primary: var(--sb-blue-primary);
   --primary-foreground: #ffffff;
-  --secondary: #6366f1;
-  --accent: #10b981;
+  --secondary: var(--sb-blue-darken);
+  --accent: var(--sb-success);
   --accent-foreground: #ffffff;
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
+  --background: var(--sb-bg);
+  --foreground: var(--sb-ink);
+  --muted: var(--sb-bg-soft);
+  --muted-foreground: var(--sb-ink-soft);
+  --border: var(--sb-line);
 
   /* Typography */
-  --font-body: var(--font-inter), system-ui, sans-serif;
-  --font-heading: var(--font-outfit), system-ui, sans-serif;
+  --font-body: var(--font-montserrat), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: var(--font-montserrat), system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.05);
-  --glass-blur: blur(16px);
+  --glass-bg: rgba(255, 255, 255, 0.96);
+  --glass-border: rgba(20, 30, 80, 0.06);
+  --glass-blur: blur(8px);
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xs: 0 1px 2px rgba(20, 30, 80, 0.06);
+  --shadow-sm: 0 2px 6px rgba(20, 30, 80, 0.06), 0 1px 2px rgba(20, 30, 80, 0.04);
+  --shadow-md: 0 8px 20px rgba(20, 30, 80, 0.08), 0 2px 4px rgba(20, 30, 80, 0.04);
+  --shadow-lg: 0 16px 40px rgba(20, 30, 80, 0.12), 0 4px 8px rgba(20, 30, 80, 0.06);
+  --shadow-brand: 0 8px 24px rgba(43, 107, 255, 0.3);
 }
 
 * {
@@ -49,23 +79,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background: var(--sb-blue-100);
+  color: var(--sb-blue-darken);
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--sb-ink);
+  text-wrap: balance;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-a:hover {
-  opacity: 0.8;
-}
-
-/* Glass Utility */
 .glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
@@ -73,11 +106,10 @@ a:hover {
   border: 1px solid var(--glass-border);
 }
 
-/* Section Utility */
 .container {
-  max-width: 1400px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 56px;
   width: 100%;
 }
 
@@ -85,18 +117,37 @@ main {
   flex: 1;
 }
 
-/* Micro-animations */
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+}
+
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-in {
-  animation: fadeInUp 1s ease-out forwards;
+  animation: fadeInUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes sb-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.sb-float-a { animation: sb-float 5s ease-in-out infinite; }
+.sb-float-b { animation: sb-float 6s ease-in-out infinite 1.2s; }
+
+@keyframes sb-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(31, 179, 120, 0.55); }
+  70% { box-shadow: 0 0 0 12px rgba(31, 179, 120, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(31, 179, 120, 0); }
+}
+.sb-pulse-dot { animation: sb-pulse 2.2s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-float-a, .sb-float-b, .sb-pulse-dot, .animate-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

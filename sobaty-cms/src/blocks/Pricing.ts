@@ -1,9 +1,11 @@
 import type { Block } from 'payload'
+import { anchorField } from './shared'
 
 export const Pricing: Block = {
   slug: 'pricing',
   labels: { singular: 'Pricing', plural: 'Pricings' },
   fields: [
+    anchorField,
     {
       name: 'preTitle',
       type: 'text',
@@ -18,35 +20,9 @@ export const Pricing: Block = {
       admin: { description: 'Utilise **double-astérisques** pour les mots en surbrillance' },
     },
     {
-      name: 'monthlyLabel',
-      type: 'text',
+      name: 'description',
+      type: 'textarea',
       localized: true,
-      defaultValue: 'Mensuel',
-    },
-    {
-      name: 'yearlyLabel',
-      type: 'text',
-      localized: true,
-      defaultValue: 'Annuel',
-    },
-    {
-      name: 'yearlyDiscountLabel',
-      type: 'text',
-      localized: true,
-      defaultValue: '-20%',
-      admin: { description: 'Badge de remise affiché sur les plans payants en mode annuel' },
-    },
-    {
-      name: 'periodSuffix',
-      type: 'text',
-      localized: true,
-      defaultValue: '/mois',
-    },
-    {
-      name: 'popularBadge',
-      type: 'text',
-      localized: true,
-      defaultValue: 'Le plus populaire',
     },
     {
       name: 'plans',
@@ -55,16 +31,30 @@ export const Pricing: Block = {
       minRows: 1,
       labels: { singular: 'Plan', plural: 'Plans' },
       fields: [
+        { name: 'name', type: 'text', required: true, localized: true },
         {
-          name: 'icon',
+          name: 'price',
           type: 'text',
           required: true,
-          admin: { description: 'Nom de l\'icône Lucide (ex: Zap, Star, Shield)' },
+          admin: { description: 'Prix affiché (ex: 0€, 19€, 25€)' },
         },
-        { name: 'name', type: 'text', required: true, localized: true },
-        { name: 'description', type: 'text', localized: true },
-        { name: 'priceMonthly', type: 'text', required: true, admin: { description: 'Prix sans devise (ex: 14.90)' } },
-        { name: 'priceYearly', type: 'text', required: true },
+        {
+          name: 'priceSuffix',
+          type: 'text',
+          required: true,
+          localized: true,
+          defaultValue: '/ mois',
+          admin: { description: 'Suffixe à droite (ex: / mois, / 30 jours)' },
+        },
+        {
+          name: 'note',
+          type: 'textarea',
+          localized: true,
+          admin: {
+            description:
+              'Phrase descriptive sous le prix. Utilise **double-astérisques** pour mettre en gras.',
+          },
+        },
         {
           name: 'features',
           type: 'array',
@@ -77,10 +67,64 @@ export const Pricing: Block = {
           fields: [
             { name: 'label', type: 'text', localized: true },
             { name: 'href', type: 'text', defaultValue: '/register' },
+            {
+              name: 'variant',
+              type: 'select',
+              defaultValue: 'outline',
+              options: [
+                { label: 'Primaire (rempli)', value: 'primary' },
+                { label: 'Outline', value: 'outline' },
+              ],
+            },
           ],
         },
-        { name: 'popular', type: 'checkbox', defaultValue: false, label: 'Mettre en avant' },
+        { name: 'footnote', type: 'text', localized: true },
+        {
+          name: 'highlight',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Mettre en avant (badge orange + élévation)',
+        },
+        { name: 'badge', type: 'text', localized: true, admin: { description: 'Texte du badge orange' } },
       ],
+    },
+    {
+      name: 'youngCompany',
+      type: 'group',
+      label: 'Bandeau "Jeune entreprise"',
+      fields: [
+        { name: 'show', type: 'checkbox', defaultValue: true },
+        { name: 'eyebrow', type: 'text', localized: true, defaultValue: 'Offre jeune entreprise' },
+        {
+          name: 'title',
+          type: 'text',
+          localized: true,
+          defaultValue: 'Votre entreprise a moins de 3 ans ?',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          localized: true,
+          admin: { description: 'Utilise **double-astérisques** pour mettre en gras' },
+          defaultValue:
+            "Bénéficiez de **102€ d'économie** sur votre première année.",
+        },
+        {
+          name: 'cta',
+          type: 'group',
+          fields: [
+            { name: 'label', type: 'text', localized: true, defaultValue: "J'en profite →" },
+            { name: 'href', type: 'text' },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'trustItems',
+      type: 'array',
+      label: 'Trust row (bas de section)',
+      labels: { singular: 'Élément', plural: 'Éléments' },
+      fields: [{ name: 'text', type: 'text', required: true, localized: true }],
     },
   ],
 }

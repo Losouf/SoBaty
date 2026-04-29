@@ -188,11 +188,282 @@ export interface Page {
   layout: (
     | {
         /**
-         * Petit badge en haut du Hero (laisser vide pour le masquer)
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        /**
+         * Mini-tag à gauche de l'eyebrow (ex: BTP, BÊTA)
+         */
+        badgePrefix?: string | null;
+        /**
+         * Texte de l'eyebrow (ex: « Pensé par et pour les artisans »)
          */
         badge?: string | null;
         /**
-         * Entoure les mots à mettre en surbrillance avec **double-astérisques**
+         * Entoure les mots à mettre en surbrillance avec **double-astérisques**. Saute une ligne avec \n.
+         */
+        title: string;
+        description?: string | null;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        primaryCta?: {
+          label?: string | null;
+          href?: string | null;
+        };
+        secondaryCta?: {
+          label?: string | null;
+          href?: string | null;
+        };
+        /**
+         * Petit texte sous les boutons (ex: 30 jours • sans CB • sans engagement)
+         */
+        fineprint?: string | null;
+        stats?:
+          | {
+              value: string;
+              label: string;
+              showStars?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        showMockup?: boolean | null;
+        mockBadgeTop?: {
+          show?: boolean | null;
+          eyebrow?: string | null;
+          title?: string | null;
+        };
+        mockBadgeBottom?: {
+          show?: boolean | null;
+          title?: string | null;
+          subtitle?: string | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        /**
+         * Petit texte affiché au-dessus du bandeau de logos
+         */
+        eyebrow?: string | null;
+        clients: {
+          name: string;
+          weight?: ('400' | '500' | '600' | '700' | '800') | null;
+          italic?: boolean | null;
+          tracking?: ('tight' | 'normal' | 'wide') | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'logoStrip';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        description?: string | null;
+        features: {
+          eyebrow: string;
+          /**
+           * Première partie du titre (en noir)
+           */
+          title: string;
+          /**
+           * Suite du titre, mise en bleu
+           */
+          accent?: string | null;
+          description: string;
+          points?:
+            | {
+                title: string;
+                desc?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          mockupVariant?: ('none' | 'devis' | 'signature' | 'dashboard') | null;
+          reverse?: boolean | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'features';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        beforeLabel?: string | null;
+        afterLabel?: string | null;
+        beforeEyebrow?: string | null;
+        afterEyebrow?: string | null;
+        rows: {
+          before: string;
+          after: string;
+          id?: string | null;
+        }[];
+        stats?:
+          | {
+              value: string;
+              label: string;
+              sub?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'comparison';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        description?: string | null;
+        plans: {
+          name: string;
+          /**
+           * Prix affiché (ex: 0€, 19€, 25€)
+           */
+          price: string;
+          /**
+           * Suffixe à droite (ex: / mois, / 30 jours)
+           */
+          priceSuffix: string;
+          /**
+           * Phrase descriptive sous le prix. Utilise **double-astérisques** pour mettre en gras.
+           */
+          note?: string | null;
+          features: {
+            text: string;
+            id?: string | null;
+          }[];
+          cta?: {
+            label?: string | null;
+            href?: string | null;
+            variant?: ('primary' | 'outline') | null;
+          };
+          footnote?: string | null;
+          highlight?: boolean | null;
+          /**
+           * Texte du badge orange
+           */
+          badge?: string | null;
+          id?: string | null;
+        }[];
+        youngCompany?: {
+          show?: boolean | null;
+          eyebrow?: string | null;
+          title?: string | null;
+          /**
+           * Utilise **double-astérisques** pour mettre en gras
+           */
+          description?: string | null;
+          cta?: {
+            label?: string | null;
+            href?: string | null;
+          };
+        };
+        trustItems?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pricing';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        googleRating?: {
+          show?: boolean | null;
+          label?: string | null;
+          sub?: string | null;
+        };
+        reviews: {
+          name: string;
+          role: string;
+          /**
+           * Métier (ex: Rénovation, Plomberie)
+           */
+          trade?: string | null;
+          content: string;
+          stars: number;
+          avatarColor?: ('blue' | 'darken' | 'lighten') | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonials';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        items: {
+          question: string;
+          /**
+           * Utilise **double-astérisques** pour les mots à mettre en gras
+           */
+          answer: string;
+          id?: string | null;
+        }[];
+        contactLine?: {
+          show?: boolean | null;
+          text?: string | null;
+          linkLabel?: string | null;
+          linkHref?: string | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'faq';
+      }
+    | {
+        /**
+         * Ancre HTML pour cibler la section depuis un lien de menu (sans le #). Ex: tarifs, fonctionnalites, faq.
+         */
+        anchor?: string | null;
+        /**
+         * Saute une ligne avec \n pour forcer un retour à la ligne dans le titre
          */
         title: string;
         description?: string | null;
@@ -204,119 +475,16 @@ export interface Page {
           label?: string | null;
           href?: string | null;
         };
-        stats?:
+        fineprint?: string | null;
+        trustItems?:
           | {
-              value: string;
-              label: string;
+              text: string;
               id?: string | null;
             }[]
           | null;
-        showMockup?: boolean | null;
         id?: string | null;
         blockName?: string | null;
-        blockType: 'hero';
-      }
-    | {
-        preTitle?: string | null;
-        /**
-         * Utilise **double-astérisques** pour les mots en surbrillance
-         */
-        title: string;
-        features: {
-          /**
-           * Nom de l'icône Lucide en PascalCase (ex: Zap, FileText, TrendingUp)
-           */
-          icon: string;
-          title: string;
-          description: string;
-          points?:
-            | {
-                text: string;
-                id?: string | null;
-              }[]
-            | null;
-          mockupVariant?: ('none' | 'billing' | 'quotes' | 'tracking') | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'features';
-      }
-    | {
-        preTitle?: string | null;
-        /**
-         * Utilise **double-astérisques** pour les mots en surbrillance
-         */
-        title: string;
-        monthlyLabel?: string | null;
-        yearlyLabel?: string | null;
-        /**
-         * Badge de remise affiché sur les plans payants en mode annuel
-         */
-        yearlyDiscountLabel?: string | null;
-        periodSuffix?: string | null;
-        popularBadge?: string | null;
-        plans: {
-          /**
-           * Nom de l'icône Lucide (ex: Zap, Star, Shield)
-           */
-          icon: string;
-          name: string;
-          description?: string | null;
-          /**
-           * Prix sans devise (ex: 14.90)
-           */
-          priceMonthly: string;
-          priceYearly: string;
-          features: {
-            text: string;
-            id?: string | null;
-          }[];
-          cta?: {
-            label?: string | null;
-            href?: string | null;
-          };
-          popular?: boolean | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'pricing';
-      }
-    | {
-        preTitle?: string | null;
-        /**
-         * Utilise **double-astérisques** pour les mots en surbrillance
-         */
-        title: string;
-        reviews: {
-          name: string;
-          role: string;
-          content: string;
-          stars: number;
-          size: 'small' | 'medium' | 'large';
-          tag?: string | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'testimonials';
-      }
-    | {
-        preTitle?: string | null;
-        /**
-         * Utilise **double-astérisques** pour les mots en surbrillance
-         */
-        title: string;
-        subtitle?: string | null;
-        items: {
-          question: string;
-          answer: string;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'faq';
+        blockType: 'finalCta';
       }
   )[];
   updatedAt: string;
@@ -460,7 +628,239 @@ export interface PagesSelect<T extends boolean = true> {
         hero?:
           | T
           | {
+              anchor?: T;
+              badgePrefix?: T;
               badge?: T;
+              title?: T;
+              description?: T;
+              bullets?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              primaryCta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              secondaryCta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              fineprint?: T;
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    showStars?: T;
+                    id?: T;
+                  };
+              showMockup?: T;
+              mockBadgeTop?:
+                | T
+                | {
+                    show?: T;
+                    eyebrow?: T;
+                    title?: T;
+                  };
+              mockBadgeBottom?:
+                | T
+                | {
+                    show?: T;
+                    title?: T;
+                    subtitle?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        logoStrip?:
+          | T
+          | {
+              anchor?: T;
+              eyebrow?: T;
+              clients?:
+                | T
+                | {
+                    name?: T;
+                    weight?: T;
+                    italic?: T;
+                    tracking?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        features?:
+          | T
+          | {
+              anchor?: T;
+              preTitle?: T;
+              title?: T;
+              description?: T;
+              features?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    accent?: T;
+                    description?: T;
+                    points?:
+                      | T
+                      | {
+                          title?: T;
+                          desc?: T;
+                          id?: T;
+                        };
+                    mockupVariant?: T;
+                    reverse?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        comparison?:
+          | T
+          | {
+              anchor?: T;
+              preTitle?: T;
+              title?: T;
+              beforeLabel?: T;
+              afterLabel?: T;
+              beforeEyebrow?: T;
+              afterEyebrow?: T;
+              rows?:
+                | T
+                | {
+                    before?: T;
+                    after?: T;
+                    id?: T;
+                  };
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    sub?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        pricing?:
+          | T
+          | {
+              anchor?: T;
+              preTitle?: T;
+              title?: T;
+              description?: T;
+              plans?:
+                | T
+                | {
+                    name?: T;
+                    price?: T;
+                    priceSuffix?: T;
+                    note?: T;
+                    features?:
+                      | T
+                      | {
+                          text?: T;
+                          id?: T;
+                        };
+                    cta?:
+                      | T
+                      | {
+                          label?: T;
+                          href?: T;
+                          variant?: T;
+                        };
+                    footnote?: T;
+                    highlight?: T;
+                    badge?: T;
+                    id?: T;
+                  };
+              youngCompany?:
+                | T
+                | {
+                    show?: T;
+                    eyebrow?: T;
+                    title?: T;
+                    description?: T;
+                    cta?:
+                      | T
+                      | {
+                          label?: T;
+                          href?: T;
+                        };
+                  };
+              trustItems?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              anchor?: T;
+              preTitle?: T;
+              title?: T;
+              googleRating?:
+                | T
+                | {
+                    show?: T;
+                    label?: T;
+                    sub?: T;
+                  };
+              reviews?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    trade?: T;
+                    content?: T;
+                    stars?: T;
+                    avatarColor?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              anchor?: T;
+              preTitle?: T;
+              title?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              contactLine?:
+                | T
+                | {
+                    show?: T;
+                    text?: T;
+                    linkLabel?: T;
+                    linkHref?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        finalCta?:
+          | T
+          | {
+              anchor?: T;
               title?: T;
               description?: T;
               primaryCta?:
@@ -475,106 +875,11 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
-              stats?:
+              fineprint?: T;
+              trustItems?:
                 | T
                 | {
-                    value?: T;
-                    label?: T;
-                    id?: T;
-                  };
-              showMockup?: T;
-              id?: T;
-              blockName?: T;
-            };
-        features?:
-          | T
-          | {
-              preTitle?: T;
-              title?: T;
-              features?:
-                | T
-                | {
-                    icon?: T;
-                    title?: T;
-                    description?: T;
-                    points?:
-                      | T
-                      | {
-                          text?: T;
-                          id?: T;
-                        };
-                    mockupVariant?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        pricing?:
-          | T
-          | {
-              preTitle?: T;
-              title?: T;
-              monthlyLabel?: T;
-              yearlyLabel?: T;
-              yearlyDiscountLabel?: T;
-              periodSuffix?: T;
-              popularBadge?: T;
-              plans?:
-                | T
-                | {
-                    icon?: T;
-                    name?: T;
-                    description?: T;
-                    priceMonthly?: T;
-                    priceYearly?: T;
-                    features?:
-                      | T
-                      | {
-                          text?: T;
-                          id?: T;
-                        };
-                    cta?:
-                      | T
-                      | {
-                          label?: T;
-                          href?: T;
-                        };
-                    popular?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        testimonials?:
-          | T
-          | {
-              preTitle?: T;
-              title?: T;
-              reviews?:
-                | T
-                | {
-                    name?: T;
-                    role?: T;
-                    content?: T;
-                    stars?: T;
-                    size?: T;
-                    tag?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        faq?:
-          | T
-          | {
-              preTitle?: T;
-              title?: T;
-              subtitle?: T;
-              items?:
-                | T
-                | {
-                    question?: T;
-                    answer?: T;
+                    text?: T;
                     id?: T;
                   };
               id?: T;
@@ -630,6 +935,19 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  announcement?: {
+    enabled?: boolean | null;
+    /**
+     * Petite étiquette à gauche (ex: NOUVEAU, BÊTA)
+     */
+    badge?: string | null;
+    /**
+     * Message du bandeau. Utilise **double-astérisques** pour mettre des mots en gras.
+     */
+    message?: string | null;
+    linkLabel?: string | null;
+    linkHref?: string | null;
+  };
   /**
    * Logo affiché dans la barre de navigation
    */
@@ -659,19 +977,17 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Logo affiché dans le footer (variante claire / blanche)
+   */
   logo?: (number | null) | Media;
   logoAlt?: string | null;
   tagline?: string | null;
-  contacts?:
-    | {
-        /**
-         * Nom de l'icône Lucide (ex: Mail, Phone, MapPin)
-         */
-        icon: string;
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
+  rating?: {
+    show?: boolean | null;
+    score?: string | null;
+    platform?: string | null;
+  };
   columns?:
     | {
         title: string;
@@ -685,29 +1001,14 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
-  newsletter?: {
-    title?: string | null;
-    description?: string | null;
-    placeholder?: string | null;
-  };
-  socials?:
-    | {
-        platform: 'linkedin' | 'twitter' | 'facebook' | 'instagram' | 'youtube' | 'github';
-        href: string;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * Utilise {year} pour insérer l'année courante
    */
   copyright?: string | null;
-  legalLinks?:
-    | {
-        label: string;
-        href: string;
-        id?: string | null;
-      }[]
-    | null;
+  /**
+   * Le ♥ sera remplacé par une icône cœur rouge.
+   */
+  madeWith?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -716,6 +1017,15 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  announcement?:
+    | T
+    | {
+        enabled?: T;
+        badge?: T;
+        message?: T;
+        linkLabel?: T;
+        linkHref?: T;
+      };
   logo?: T;
   logoAlt?: T;
   navLinks?:
@@ -749,12 +1059,12 @@ export interface FooterSelect<T extends boolean = true> {
   logo?: T;
   logoAlt?: T;
   tagline?: T;
-  contacts?:
+  rating?:
     | T
     | {
-        icon?: T;
-        value?: T;
-        id?: T;
+        show?: T;
+        score?: T;
+        platform?: T;
       };
   columns?:
     | T
@@ -769,28 +1079,8 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  newsletter?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        placeholder?: T;
-      };
-  socials?:
-    | T
-    | {
-        platform?: T;
-        href?: T;
-        id?: T;
-      };
   copyright?: T;
-  legalLinks?:
-    | T
-    | {
-        label?: T;
-        href?: T;
-        id?: T;
-      };
+  madeWith?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

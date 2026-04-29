@@ -1,146 +1,146 @@
-'use client'
-
-import { useState, useEffect, useId } from 'react'
+import { Fragment } from 'react'
 import Link from 'next/link'
 import { Check } from 'lucide-react'
-import Icon from '../Icon'
 import HighlightedTitle from '../HighlightedTitle'
 import styles from './Pricing.module.css'
 
 type Plan = {
   id?: string | null
-  icon: string
   name: string
-  description?: string | null
-  priceMonthly: string
-  priceYearly: string
+  price: string
+  priceSuffix: string
+  note?: string | null
   features: { text: string; id?: string | null }[]
-  cta?: { label?: string | null; href?: string | null } | null
-  popular?: boolean | null
+  cta?: {
+    label?: string | null
+    href?: string | null
+    variant?: 'primary' | 'outline' | null
+  } | null
+  footnote?: string | null
+  highlight?: boolean | null
+  badge?: string | null
 }
 
 type PricingProps = {
   preTitle?: string | null
   title: string
-  monthlyLabel?: string | null
-  yearlyLabel?: string | null
-  yearlyDiscountLabel?: string | null
-  periodSuffix?: string | null
-  popularBadge?: string | null
+  description?: string | null
   plans: Plan[]
+  youngCompany?: {
+    show?: boolean | null
+    eyebrow?: string | null
+    title?: string | null
+    description?: string | null
+    cta?: { label?: string | null; href?: string | null } | null
+  } | null
+  trustItems?: { text: string; id?: string | null }[] | null
+}
+
+function renderBoldMarkdown(text: string) {
+  const parts = text.split(/\*\*(.+?)\*\*/g)
+  return parts.map((part, i) =>
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : <Fragment key={i}>{part}</Fragment>,
+  )
 }
 
 export default function Pricing({
   preTitle,
   title,
-  monthlyLabel = 'Mensuel',
-  yearlyLabel = 'Annuel',
-  yearlyDiscountLabel = '-20%',
-  periodSuffix = '/mois',
-  popularBadge = 'Le plus populaire',
+  description,
   plans,
+  youngCompany,
+  trustItems,
 }: PricingProps) {
-  const [isYearly, setIsYearly] = useState(false)
-  const toggleId = useId()
-
-  useEffect(() => {
-    const saved = sessionStorage.getItem('billingCycle')
-    if (saved) setIsYearly(saved === 'yearly')
-  }, [])
-
-  const handleToggle = () => {
-    const newValue = !isYearly
-    setIsYearly(newValue)
-    sessionStorage.setItem('billingCycle', newValue ? 'yearly' : 'monthly')
-  }
-
   return (
-    <section id="pricing" className={styles.pricing}>
+    <section className={styles.pricing}>
       <div className="container">
         <div className={styles.header}>
           {preTitle && <span className={styles.preTitle}>{preTitle}</span>}
           <HighlightedTitle text={title} className={styles.title} />
-
-          <div className={styles.toggleWrapper}>
-            <div className={styles.segmentedToggle}>
-              <input
-                type="checkbox"
-                id={toggleId}
-                className={styles.toggleInput}
-                checked={isYearly}
-                onChange={handleToggle}
-              />
-              <label htmlFor={toggleId} className={styles.toggleLabel}>
-                <span className={`${styles.toggleOption} ${!isYearly ? styles.active : ''}`}>{monthlyLabel}</span>
-                <span className={`${styles.toggleOption} ${isYearly ? styles.active : ''}`}>{yearlyLabel}</span>
-                <div className={styles.toggleSlider} />
-              </label>
-            </div>
-          </div>
+          {description && <p className={styles.description}>{description}</p>}
         </div>
 
-        <div className={styles.flexGrid}>
-          {plans.map((plan, index) => {
-            const isFree = parseFloat(plan.priceMonthly) === 0
+        <div className={styles.plans}>
+          {plans.map((plan, i) => {
+            const variant = plan.cta?.variant || 'outline'
             return (
-              <div key={index} className={`${styles.card} ${plan.popular ? styles.popularCard : ''}`}>
-                {plan.popular && (
-                  <>
-                    <div className={styles.popularBadge}>{popularBadge}</div>
-                    <div className={styles.shimmer} />
-                  </>
+              <div
+                key={i}
+                className={`${styles.card} ${plan.highlight ? styles.cardHighlight : ''}`}
+              >
+                {plan.highlight && plan.badge && (
+                  <span className={styles.badge}>{plan.badge}</span>
                 )}
-
-                <div className={styles.cardHeader}>
-                  <div className={styles.titleRow}>
-                    <div className={styles.iconWrapper}>
-                      <Icon name={plan.icon} size={20} />
-                    </div>
-                    <h3>{plan.name}</h3>
-                  </div>
-                  {plan.description && <p>{plan.description}</p>}
+                <div className={styles.tier}>{plan.name}</div>
+                <div className={styles.priceLine}>
+                  <span className={styles.price}>{plan.price}</span>
+                  <span className={styles.priceSuffix}>
+                    {plan.priceSuffix} <sup>HT</sup>
+                  </span>
                 </div>
-
-                <div className={styles.priceContainer}>
-                  <div className={styles.odometer}>
-                    <span className={styles.currency}>€</span>
-                    <div className={styles.odometerWrapper}>
-                      <div className={`${styles.odometerValue} ${isYearly ? styles.rollUp : ''}`}>
-                        <span className={styles.priceStr}>{plan.priceMonthly}</span>
-                        <span className={styles.priceStr}>{plan.priceYearly}</span>
-                      </div>
-                    </div>
-                    <span className={styles.period}>{periodSuffix}</span>
-
-                    {isYearly && !isFree && yearlyDiscountLabel && (
-                      <span className={styles.cardDiscount}>{yearlyDiscountLabel}</span>
-                    )}
-                  </div>
-                </div>
-
+                {plan.note && (
+                  <div className={styles.note}>{renderBoldMarkdown(plan.note)}</div>
+                )}
+                <div className={styles.divider} />
                 <ul className={styles.features}>
-                  {plan.features.map((feature, fIndex) => (
-                    <li key={fIndex}>
-                      <Check size={18} className={styles.checkIcon} />
-                      {feature.text}
+                  {plan.features.map((f, j) => (
+                    <li key={j} className={styles.feature}>
+                      <Check size={16} strokeWidth={3} className={styles.featureIcon} />
+                      {f.text}
                     </li>
                   ))}
                 </ul>
-
                 <div className={styles.spacer} />
-
                 {plan.cta?.label && (
                   <Link
                     href={plan.cta.href || '/register'}
-                    className={`${styles.cta} ${plan.popular ? styles.popularCta : ''}`}
+                    className={`${styles.cta} ${variant === 'primary' ? styles.ctaPrimary : styles.ctaOutline}`}
                   >
                     {plan.cta.label}
                   </Link>
                 )}
+                {plan.footnote && <div className={styles.footnote}>{plan.footnote}</div>}
               </div>
             )
           })}
         </div>
+
+        {youngCompany?.show && (
+          <div className={styles.youngBanner}>
+            <div className={styles.youngContent}>
+              {youngCompany.eyebrow && (
+                <div className={styles.youngEyebrow}>{youngCompany.eyebrow}</div>
+              )}
+              {youngCompany.title && (
+                <div className={styles.youngTitle}>{youngCompany.title}</div>
+              )}
+              {youngCompany.description && (
+                <div className={styles.youngDesc}>
+                  {renderBoldMarkdown(youngCompany.description)}
+                </div>
+              )}
+            </div>
+            {youngCompany.cta?.label && (
+              <Link
+                href={youngCompany.cta.href || '#'}
+                className={styles.youngCta}
+              >
+                {youngCompany.cta.label}
+              </Link>
+            )}
+          </div>
+        )}
+
+        {trustItems && trustItems.length > 0 && (
+          <div className={styles.trustRow}>
+            {trustItems.map((t, i) => (
+              <div key={i} className={styles.trustItem}>
+                <Check size={16} strokeWidth={3} className={styles.trustIcon} />
+                {t.text}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

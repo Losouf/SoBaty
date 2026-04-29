@@ -1,9 +1,11 @@
 import type { Block } from 'payload'
+import { anchorField } from './shared'
 
 export const Features: Block = {
   slug: 'features',
   labels: { singular: 'Features', plural: 'Features' },
   fields: [
+    anchorField,
     {
       name: 'preTitle',
       type: 'text',
@@ -18,37 +20,58 @@ export const Features: Block = {
       admin: { description: 'Utilise **double-astérisques** pour les mots en surbrillance' },
     },
     {
+      name: 'description',
+      type: 'textarea',
+      localized: true,
+    },
+    {
       name: 'features',
       type: 'array',
       required: true,
       minRows: 1,
       labels: { singular: 'Feature', plural: 'Features' },
       fields: [
+        { name: 'eyebrow', type: 'text', required: true, localized: true },
         {
-          name: 'icon',
+          name: 'title',
           type: 'text',
           required: true,
-          admin: { description: 'Nom de l\'icône Lucide en PascalCase (ex: Zap, FileText, TrendingUp)' },
+          localized: true,
+          admin: { description: 'Première partie du titre (en noir)' },
         },
-        { name: 'title', type: 'text', required: true, localized: true },
+        {
+          name: 'accent',
+          type: 'text',
+          localized: true,
+          admin: { description: 'Suite du titre, mise en bleu' },
+        },
         { name: 'description', type: 'textarea', required: true, localized: true },
         {
           name: 'points',
           type: 'array',
           label: 'Points clés',
-          fields: [{ name: 'text', type: 'text', required: true, localized: true }],
+          fields: [
+            { name: 'title', type: 'text', required: true, localized: true },
+            { name: 'desc', type: 'text', localized: true },
+          ],
         },
         {
           name: 'mockupVariant',
           type: 'select',
-          label: 'Maquette visuelle (décoratif)',
+          label: 'Maquette visuelle',
           options: [
             { label: 'Aucune', value: 'none' },
-            { label: 'Facturation', value: 'billing' },
-            { label: 'Devis', value: 'quotes' },
-            { label: 'Suivi', value: 'tracking' },
+            { label: 'Éditeur de devis (PDF live)', value: 'devis' },
+            { label: 'Signature mobile', value: 'signature' },
+            { label: 'Dashboard / KPI', value: 'dashboard' },
           ],
-          defaultValue: 'none',
+          defaultValue: 'devis',
+        },
+        {
+          name: 'reverse',
+          type: 'checkbox',
+          label: 'Inverser (mock à gauche)',
+          defaultValue: false,
         },
       ],
     },

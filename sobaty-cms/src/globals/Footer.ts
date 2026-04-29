@@ -9,31 +9,29 @@ export const Footer: GlobalConfig = {
       name: 'logo',
       type: 'upload',
       relationTo: 'media',
+      admin: { description: 'Logo affiché dans le footer (variante claire / blanche)' },
     },
     {
       name: 'logoAlt',
       type: 'text',
-      defaultValue: 'SoBaty Logo',
+      defaultValue: 'SO BATY Logo',
       localized: true,
     },
     {
       name: 'tagline',
       type: 'textarea',
       localized: true,
+      defaultValue:
+        'Le logiciel de devis et factures pensé pour les artisans du BTP. Vos devis faciles.',
     },
     {
-      name: 'contacts',
-      type: 'array',
-      label: 'Coordonnées',
-      labels: { singular: 'Coordonnée', plural: 'Coordonnées' },
+      name: 'rating',
+      type: 'group',
+      label: 'Notation (Google)',
       fields: [
-        {
-          name: 'icon',
-          type: 'text',
-          required: true,
-          admin: { description: 'Nom de l\'icône Lucide (ex: Mail, Phone, MapPin)' },
-        },
-        { name: 'value', type: 'text', required: true },
+        { name: 'show', type: 'checkbox', defaultValue: true },
+        { name: 'score', type: 'text', defaultValue: '4,8/5' },
+        { name: 'platform', type: 'text', localized: true, defaultValue: 'sur Google' },
       ],
     },
     {
@@ -54,51 +52,19 @@ export const Footer: GlobalConfig = {
       ],
     },
     {
-      name: 'newsletter',
-      type: 'group',
-      label: 'Newsletter',
-      fields: [
-        { name: 'title', type: 'text', localized: true, defaultValue: 'Restez informé' },
-        { name: 'description', type: 'text', localized: true },
-        { name: 'placeholder', type: 'text', localized: true, defaultValue: 'Votre email' },
-      ],
-    },
-    {
-      name: 'socials',
-      type: 'array',
-      label: 'Réseaux sociaux',
-      fields: [
-        {
-          name: 'platform',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'LinkedIn', value: 'linkedin' },
-            { label: 'Twitter / X', value: 'twitter' },
-            { label: 'Facebook', value: 'facebook' },
-            { label: 'Instagram', value: 'instagram' },
-            { label: 'YouTube', value: 'youtube' },
-            { label: 'GitHub', value: 'github' },
-          ],
-        },
-        { name: 'href', type: 'text', required: true },
-      ],
-    },
-    {
       name: 'copyright',
       type: 'text',
       localized: true,
       admin: { description: 'Utilise {year} pour insérer l\'année courante' },
-      defaultValue: '© {year} SoBaty. Fait avec passion pour les bâtisseurs.',
+      defaultValue:
+        '© {year} SOBATY SAS — Tous droits réservés. SIRET 912 345 678 00012.',
     },
     {
-      name: 'legalLinks',
-      type: 'array',
-      label: 'Liens légaux',
-      fields: [
-        { name: 'label', type: 'text', required: true, localized: true },
-        { name: 'href', type: 'text', required: true },
-      ],
+      name: 'madeWith',
+      type: 'text',
+      localized: true,
+      defaultValue: 'Fait avec ♥ à Lyon, pour les artisans du BTP.',
+      admin: { description: 'Le ♥ sera remplacé par une icône cœur rouge.' },
     },
   ],
 }
