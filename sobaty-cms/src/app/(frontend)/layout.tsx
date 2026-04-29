@@ -1,19 +1,27 @@
 import React from 'react'
-import './styles.css'
+import type { Metadata } from 'next'
+import { Inter, Outfit } from 'next/font/google'
+import './globals.css'
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+})
+
+const outfit = Outfit({
+  variable: '--font-outfit',
+  subsets: ['latin'],
+})
+
+export const metadata: Metadata = {
+  title: 'SoBaty - Logiciel de Facturation et Devis Simplifié',
+  description: 'Gérez vos factures et devis en quelques clics.',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
+    <html lang="fr" className={`${inter.variable} ${outfit.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   )
 }

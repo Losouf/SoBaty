@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    pages: Page;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -86,10 +88,16 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
-  locale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
+  globals: {
+    header: Header;
+    footer: Footer;
+  };
+  globalsSelect: {
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
+  locale: 'fr' | 'en';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -163,6 +171,159 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * Identifiant URL (ex: "home" pour la page d'accueil, "about" pour /about)
+   */
+  slug: string;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    keywords?: string | null;
+  };
+  layout: (
+    | {
+        /**
+         * Petit badge en haut du Hero (laisser vide pour le masquer)
+         */
+        badge?: string | null;
+        /**
+         * Entoure les mots à mettre en surbrillance avec **double-astérisques**
+         */
+        title: string;
+        description?: string | null;
+        primaryCta?: {
+          label?: string | null;
+          href?: string | null;
+        };
+        secondaryCta?: {
+          label?: string | null;
+          href?: string | null;
+        };
+        stats?:
+          | {
+              value: string;
+              label: string;
+              id?: string | null;
+            }[]
+          | null;
+        showMockup?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        features: {
+          /**
+           * Nom de l'icône Lucide en PascalCase (ex: Zap, FileText, TrendingUp)
+           */
+          icon: string;
+          title: string;
+          description: string;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          mockupVariant?: ('none' | 'billing' | 'quotes' | 'tracking') | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'features';
+      }
+    | {
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        monthlyLabel?: string | null;
+        yearlyLabel?: string | null;
+        /**
+         * Badge de remise affiché sur les plans payants en mode annuel
+         */
+        yearlyDiscountLabel?: string | null;
+        periodSuffix?: string | null;
+        popularBadge?: string | null;
+        plans: {
+          /**
+           * Nom de l'icône Lucide (ex: Zap, Star, Shield)
+           */
+          icon: string;
+          name: string;
+          description?: string | null;
+          /**
+           * Prix sans devise (ex: 14.90)
+           */
+          priceMonthly: string;
+          priceYearly: string;
+          features: {
+            text: string;
+            id?: string | null;
+          }[];
+          cta?: {
+            label?: string | null;
+            href?: string | null;
+          };
+          popular?: boolean | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pricing';
+      }
+    | {
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        reviews: {
+          name: string;
+          role: string;
+          content: string;
+          stars: number;
+          size: 'small' | 'medium' | 'large';
+          tag?: string | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonials';
+      }
+    | {
+        preTitle?: string | null;
+        /**
+         * Utilise **double-astérisques** pour les mots en surbrillance
+         */
+        title: string;
+        subtitle?: string | null;
+        items: {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'faq';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -192,6 +353,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -277,6 +442,150 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        keywords?: T;
+      };
+  layout?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              badge?: T;
+              title?: T;
+              description?: T;
+              primaryCta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              secondaryCta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              showMockup?: T;
+              id?: T;
+              blockName?: T;
+            };
+        features?:
+          | T
+          | {
+              preTitle?: T;
+              title?: T;
+              features?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    description?: T;
+                    points?:
+                      | T
+                      | {
+                          text?: T;
+                          id?: T;
+                        };
+                    mockupVariant?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        pricing?:
+          | T
+          | {
+              preTitle?: T;
+              title?: T;
+              monthlyLabel?: T;
+              yearlyLabel?: T;
+              yearlyDiscountLabel?: T;
+              periodSuffix?: T;
+              popularBadge?: T;
+              plans?:
+                | T
+                | {
+                    icon?: T;
+                    name?: T;
+                    description?: T;
+                    priceMonthly?: T;
+                    priceYearly?: T;
+                    features?:
+                      | T
+                      | {
+                          text?: T;
+                          id?: T;
+                        };
+                    cta?:
+                      | T
+                      | {
+                          label?: T;
+                          href?: T;
+                        };
+                    popular?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              preTitle?: T;
+              title?: T;
+              reviews?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    content?: T;
+                    stars?: T;
+                    size?: T;
+                    tag?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              preTitle?: T;
+              title?: T;
+              subtitle?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +623,177 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  /**
+   * Logo affiché dans la barre de navigation
+   */
+  logo?: (number | null) | Media;
+  logoAlt?: string | null;
+  navLinks?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  secondaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  primaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  logo?: (number | null) | Media;
+  logoAlt?: string | null;
+  tagline?: string | null;
+  contacts?:
+    | {
+        /**
+         * Nom de l'icône Lucide (ex: Mail, Phone, MapPin)
+         */
+        icon: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  columns?:
+    | {
+        title: string;
+        links?:
+          | {
+              label: string;
+              href: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  newsletter?: {
+    title?: string | null;
+    description?: string | null;
+    placeholder?: string | null;
+  };
+  socials?:
+    | {
+        platform: 'linkedin' | 'twitter' | 'facebook' | 'instagram' | 'youtube' | 'github';
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Utilise {year} pour insérer l'année courante
+   */
+  copyright?: string | null;
+  legalLinks?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  logoAlt?: T;
+  navLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  secondaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  primaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
+  logoAlt?: T;
+  tagline?: T;
+  contacts?:
+    | T
+    | {
+        icon?: T;
+        value?: T;
+        id?: T;
+      };
+  columns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  newsletter?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        placeholder?: T;
+      };
+  socials?:
+    | T
+    | {
+        platform?: T;
+        href?: T;
+        id?: T;
+      };
+  copyright?: T;
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
