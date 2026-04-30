@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # Next.js standalone build for Payload CMS
 # Requires `output: 'standalone'` in next.config.ts
 
@@ -6,6 +5,7 @@ FROM node:22.17.0-alpine AS base
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# ---------- deps ----------
 FROM base AS deps
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -15,11 +15,7 @@ FROM base AS builder
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# PAYLOAD_SECRET is mounted as a BuildKit secret rather than baked in
-# Pass it at build time with: --secret id=payload_secret,env=PAYLOAD_SECRET
-RUN --mount=type=secret,id=payload_secret,env=PAYLOAD_SECRET \
-    npm run build
+RUN npm run build
 
 # ---------- runner ----------
 FROM base AS runner
