@@ -1,5 +1,6 @@
-# Next.js standalone build for Payload CMS
-# Requires `output: 'standalone'` in next.config.ts
+# Next.js + Payload CMS production image
+# Standalone output is NOT used because Payload's `push`/migrations
+# load drizzle-kit dynamically, which Next's static tracer misses.
 
 FROM node:22.17.0-alpine AS base
 RUN apk add --no-cache libc6-compat
@@ -7,15 +8,19 @@ WORKDIR /app
 
 # ---------- deps ----------
 FROM base AS deps
+ENV NODE_ENV=development
 COPY package.json package-lock.json .npmrc* ./
-RUN npm ci
+RUN npm ci --include=dev
 
 # ---------- builder ----------
 FROM base AS builder
+ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
+# Drop dev-only deps after build to shrink the runtime layer
+RUN npm prune --omit=dev
 
 # ---------- runner ----------
 FROM base AS runner
@@ -27,13 +32,15 @@ ENV HOSTNAME=0.0.0.0
 RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
-RUN mkdir .next && chown nextjs:nodejs .next
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./next.config.ts
+COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json
+COPY --from=builder --chown=nextjs:nodejs /app/src ./src
 
 USER nextjs
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["npm", "run", "start"]
