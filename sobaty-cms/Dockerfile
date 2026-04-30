@@ -21,8 +21,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
-# Drop dev-only deps after build to shrink the runtime layer
-RUN npm prune --omit=dev
+# Note: devDeps are kept in the runtime image because the Payload CLI
+# (used at startup for migrations) needs tsx and other dev-only tooling.
 
 # ---------- runner ----------
 FROM base AS runner
@@ -45,4 +45,4 @@ COPY --from=builder --chown=nextjs:nodejs /app/src ./src
 USER nextjs
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "npm run payload migrate && npm run start"]
