@@ -7,14 +7,16 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # ---------- deps ----------
+# --include=dev forces devDependencies regardless of NODE_ENV the host injects
 FROM base AS deps
-ENV NODE_ENV=development
 COPY package.json package-lock.json .npmrc* ./
 RUN npm ci --include=dev
 
 # ---------- builder ----------
+# Next must build with NODE_ENV=production, otherwise React runs in dev mode
+# and the prerender step crashes on _global-error (useContext on null).
 FROM base AS builder
-ENV NODE_ENV=development
+ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
