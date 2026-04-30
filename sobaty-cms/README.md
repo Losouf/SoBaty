@@ -62,6 +62,34 @@ Alternatively, you can use [Docker](https://www.docker.com) to spin up this temp
 
 That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
 
+## Database migrations
+
+This project uses Payload's migration system on Postgres. Migrations live in `src/migrations/` and are applied automatically at container start by `entrypoint.sh` (which runs `npm run migrate` before booting Next).
+
+### Create a new migration
+
+After modifying a collection, global, or any schema-shaping config, generate a migration locally against a Postgres that has the *previous* schema applied (typically your dev DB):
+
+```bash
+DATABASE_URL=postgres://… npm run migrate:create my-change-name
+```
+
+This writes a new file to `src/migrations/` containing the SQL diff. Commit the file along with your config change.
+
+### Bootstrapping (first-time setup)
+
+For the very first migration on a fresh project, point `DATABASE_URL` at any empty Postgres (a throwaway local container is fine):
+
+```bash
+docker run -d --name pg-tmp -e POSTGRES_PASSWORD=pwd -p 5433:5432 postgres:16
+DATABASE_URL=postgres://postgres:pwd@localhost:5433/postgres npm run migrate:create initial
+docker rm -f pg-tmp
+```
+
+### Production behavior
+
+`entrypoint.sh` runs `npm run migrate` on every container start. Payload tracks applied migrations in a `payload_migrations` table and is idempotent — if there is nothing new to apply, it just exits 0 and Next starts immediately.
+
 ## Questions
 
 If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
